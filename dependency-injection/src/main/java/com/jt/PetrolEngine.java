@@ -3,7 +3,7 @@ package com.jt;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("petrol")
 @Primary
 public class PetrolEngine  implements Engine {
 

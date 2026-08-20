@@ -1,6 +1,7 @@
 package com.jt;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,7 +30,7 @@ public class Car{
     private Engine engine; 
     // @Autowired ---- Spring 4.3 update & SpringBoot 2.3 , if one constructor present then no need of autowired
     @Autowired //== This will given priority now to be called automatically over non-parameterized    
-    public Car(Engine engine){
+    public Car(@Qualifier("petrolEngine") Engine engine){
         this.engine=engine;
         System.out.println("Parameterized constructor");
     }
@@ -53,5 +54,4 @@ public class Car{
 
      System.out.println("Car is stopped");   
     }
-
 }
