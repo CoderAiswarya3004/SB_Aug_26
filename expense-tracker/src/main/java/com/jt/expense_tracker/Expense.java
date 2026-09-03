@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Expense {
     private int id;
     private String title;
-    private String Category;
+    private String  category;
     private double price;
     private LocalDate date;
     
