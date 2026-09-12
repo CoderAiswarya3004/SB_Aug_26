@@ -1,27 +1,28 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-const ExpenseList = () => {
+const ExpenseList = ({expenses}) => {
 
-    const[expenses, setExpenses] = useState([])
+    // const[expenses, setExpenses] = useState([])
 
-    const getExpenses = async ()=>{
-        try{
-                const response =await axios.get("http://localhost:8080/expenses")
-                setExpenses(response.data)
-                console.log("response is",response.data)
+    // const getExpenses = async ()=>{
+    //     try{
+    //             const response =await axios.get("http://localhost:8080/expenses")
+    //             setExpenses(response.data)
+    //             console.log("response is",response.data)
 
-                // fetch("http://localhost:8080/expenses",{
-                // method:{GET}
-            // }).then().then()
-        }
-        catch(err)
-        {
-            console.log("some Error Occured:-",err)
-        }
-    }
+    //             // fetch("http://localhost:8080/expenses",{
+    //             // method:{GET}
+    //         // }).then().then()
+    //     }
+    //     catch(err)
+    //     {
+    //         console.log("some Error Occured:-",err)
+    //     }
+    // }
 
     const handleDelete = async (expenseId) => {
+        if(confirm("Are you sure,you want to delete the expense"))
         try{
             const response =await axios.delete("http://localhost:8080/expenses/"+expenseId)
             console.log("////",response,typeof response.status)
@@ -39,9 +40,9 @@ const ExpenseList = () => {
         }
     }
 
-    useEffect(() =>{
-        getExpenses()
-    },[])
+    // useEffect(() =>{
+    //     getExpenses()
+    // },[])
     
   return (
     <div className='bg-white rounded-2xl shadow-md p-6 mb-6'>
@@ -61,6 +62,9 @@ const ExpenseList = () => {
         </thead>
         <tbody>
             {
+            !expenses.length?
+            <tr><td colSpan={6} className='text-center text-gray-400 py-2 text-lg font-medium italic'>No repsone recorded yet.</td></tr>
+            :(
             expenses.map((exp,idx)=>(
                      <tr key={idx} className='border-b border-gray-200 hover:bg-gray-50 transition-colors'>
              <td className='px-4 py-3 text-gray-400'>{idx+1}</td>
@@ -74,9 +78,11 @@ const ExpenseList = () => {
                 <button onClick={() => handleDelete(exp.id)} className='bg-red-400 hover:bg-red-500 text-white font-semibold rounded-lg px-3 py-1.5 transition-colors text-xs' >Delete</button>
                 </div>
              </td>
+            
+           
 
             </tr>
-            ))
+            )))
             }
            
         </tbody>
