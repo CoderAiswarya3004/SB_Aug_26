@@ -2,14 +2,15 @@ package com.jt.expense_tracker;
 
 import java.util.List;
 
-
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,12 +19,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-
+@CrossOrigin("http://localhost:5173")
+@RequestMapping("/expenses")
 public class ExpenseController {
     
     private final ExpenseService expenseService;     
    
-    @GetMapping("/expenses")
+    @GetMapping
     public List<Expense> getExpenses(){
         // String sql ="Select * from %s".formatted(Expense_TABLE);
         // List<Expense> expenses = new ArrayList<>();
@@ -49,8 +51,8 @@ public class ExpenseController {
         return expenseService.getExpenses();
     }
 
-         @GetMapping("/expenses/{id}")
-        public Expense getExpensesByID(@PathVariable int id){
+    @GetMapping("/{id}")
+    public Expense getExpensesByID(@PathVariable int id){
             // System.out.println("ID is "+ id);
             // var sql = "SELECT * FROM %s Where id =?".formatted(Expense_TABLE);
             // Expense expense = jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Expense.class),id);
@@ -75,7 +77,7 @@ public class ExpenseController {
         return expenseService.getExpenseById(id);
         }
 
-        @PostMapping("/expenses")
+        @PostMapping
         @ResponseStatus(code=HttpStatus.CREATED)
         public Expense createExpense(@RequestBody Expense expense){
             // var sql = "INSERT INTO %s (title , category, price , date ) VALUES (?,?,?,?)".formatted(Expense_TABLE);
@@ -85,7 +87,7 @@ public class ExpenseController {
            return expenseService.addExpense(expense);
         }
 
-        @DeleteMapping("/expenses/{id}")
+        @DeleteMapping("/{id}")
         @ResponseStatus(value = HttpStatus.NO_CONTENT)
         public void deleteExpense(@PathVariable int id){
                 // var sql = "DELETE FROM %s where id = ?".formatted(Expense_TABLE);
@@ -100,7 +102,7 @@ public class ExpenseController {
                 expenseService.deleteExpenseById(id);
         }
 
-        @PutMapping("/expenses")
+        @PutMapping
         @ResponseStatus(HttpStatus.ACCEPTED)
         public Expense updateExpense(@RequestBody Expense expense)
         {
