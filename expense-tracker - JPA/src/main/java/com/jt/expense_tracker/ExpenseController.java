@@ -2,7 +2,6 @@ package com.jt.expense_tracker;
 
 import java.util.List;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
