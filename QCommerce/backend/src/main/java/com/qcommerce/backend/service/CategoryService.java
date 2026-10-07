@@ -2,7 +2,10 @@ package com.qcommerce.backend.service;
 
 import com.qcommerce.backend.dto.request.CategoryRequest;
 import com.qcommerce.backend.entity.Category;
+import com.qcommerce.backend.exception.DuplicateEntryException;
 import com.qcommerce.backend.repository.CategoryRepository;
+import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,14 +18,26 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public Page<Category> getAllCategories(int pageNumber, int pageSize) {
+    public Page<Category> getAllCategories(String search,int pageNumber, int pageSize) {
         Pageable pageable = PageRequest
                 .of(pageNumber, pageSize, Sort.by( "categoryName"));
 
         return categoryRepository.findAll(pageable);
     }
 
+    //Custom query method -> findByNameIgnoreCase , along with validating search value has true value or not (containing)
+
     public Category createCategory(CategoryRequest categoryRequest) {
+
+        if(categoryRepository.existsByCategoryNameIgnoreCase(categoryRequest.categoryName())){
+            throw new DuplicateEntryException("Category already exists");
+        }
+
+//        if(categoryRequest.categoryName().isBlank())
+//        {
+//            System.out.println("Category name should not be blank");
+//        }
+
         Category category = Category.builder()
                 .categoryName(categoryRequest.categoryName())
                 .build();

@@ -5,6 +5,7 @@ import com.qcommerce.backend.dto.request.CategoryRequest;
 import com.qcommerce.backend.entity.Category;
 import com.qcommerce.backend.repository.CategoryRepository;
 import com.qcommerce.backend.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,15 +19,16 @@ public class CategoryController {
 
     @GetMapping
     public Page<Category> getAllCategories(
+            @RequestParam(required = false) String search,
             @RequestParam(required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int pageSize,
             @RequestParam(required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int pageNumber
     ) {
-      return categoryService.getAllCategories(pageNumber,pageSize);
+      return categoryService.getAllCategories(search, pageNumber, pageSize);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Category createCategory(@RequestBody CategoryRequest categoryRequest) {
+    public Category createCategory(@RequestBody @Valid CategoryRequest categoryRequest) {
         return categoryService.createCategory(categoryRequest);
     }
 }
